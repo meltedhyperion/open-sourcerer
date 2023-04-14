@@ -1,0 +1,24 @@
+{
+  "name": "open-sourcerer",
+  "version": "1.0.0",
+  "description": "How to run:",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx tsc-watch --onSuccess \"node build/index.js\"",
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "helmet": "^6.1.5",
+    "mongodb": "^5.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.4"
+  }
+}
