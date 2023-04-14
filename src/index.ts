@@ -1,34 +1,30 @@
 import express from "express";
 import { Octokit } from "octokit";
 import configs from "./configs";
+import helmet from "helmet";
+import cors from "cors";
+import repoController from "./repo";
+
+export const octokit = new Octokit({
+  auth: configs.GITHUB_TOKEN,
+});
 
 (async () => {
   const app = express();
 
-  const octokit = new Octokit({
-    auth: configs.GITHUB_TOKEN,
-  });
+  app
+  .use(helmet())
+  .use(cors())
+  .use(express.json())
+  .use(express.urlencoded({ extended: true }));
+
+
 
   app.get("/", (req, res) => {
     res.send("Hello World");
   });
 
-  // get repository commits
-  app.get("/repo/commits/:owner/:repo", async (req, res) => {
-    try {
-      // console.log(req.params);
-      const test = await octokit.request("GET /repos/{owner}/{repo}/commits", {
-        owner: req.params.owner,
-        repo: req.params.repo,
-        headers: {
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      });
-      res.status(200).send({ data: test.data });
-    } catch (err) {
-      res.status(404).send("INVALID DETAILS");
-    }
-  });
+  app.use('/repo', repoController())
 
   const port = configs.PORT;
   app.listen(port, () => {
