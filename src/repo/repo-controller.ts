@@ -5,6 +5,7 @@ import {
   getRepoCommits,
   getRepoIssues,
   getRepoLanguages,
+  getRepoReadme,
 } from "./repo-service";
 
 const handleGetRepoCommits = async (
@@ -61,11 +62,29 @@ const handleGetRepoLanguages = async (
   }
 };
 
+const handleGetRepoReadme = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const data = await getRepoReadme(
+      String(req.query.owner),
+      String(req.query.repo)
+    )
+    res.status(200).send(data);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error.message);
+  }
+};
+
 const repoController = () => {
   const router = Router();
   router.get("/commits", handleGetRepoCommits);
   router.get("/issues", handleGetRepoIssues);
   router.get("/languages", handleGetRepoLanguages);
+  router.get("/readme", handleGetRepoReadme);
   return router;
 };
 export default repoController;
