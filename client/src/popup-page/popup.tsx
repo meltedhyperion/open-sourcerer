@@ -21,7 +21,11 @@ export const Popup: FC<IProps> = () => {
           <button className="Button--primary Button">My Profile</button>
       </div>
       <hr className="my-2 border-gray-400" />
-      {RepoAnalytics(percentage)}   
+      {
+        /*RepoAnalytics(percentage)*/
+        UserAnalytics()
+      }
+
       <div className="flex flex-row justify-end items-end">
           <button className="btn Button" onClick={handleCloseButtonClick}>Close</button>
       </div>
@@ -90,7 +94,61 @@ interface ProgressBarProps {
     );
   };
 
+  const UserAnalytics = () => {
+    return (
+      <div className="flex-grow flex">
+            <div className='flex flex-col flex-grow'>
+              <div className='flex flex-grow'>
+                <div className='flex flex-grow bg-[#20252B] rounded-2xl m-2 my-3'>
+                  <div className='flex flex-col flex-grow items-center p-1'>
+                    Total Contributions
+                  </div>
+                  <div>
 
+                  </div>
+                </div>
+                <div className='flex flex-grow bg-[#20252B] rounded-2xl m-2 my-3'>
+                  <div className='flex flex-col flex-grow items-center p-1'>
+                    Contribution Rate
+                  </div>
+                  <div>
+
+                  </div>
+                </div>
+              </div>
+              <div className='flex flex-grow'>
+                <div className='flex flex-grow bg-[#20252B] rounded-2xl m-2 my-3'>
+                  <div className='flex flex-col flex-grow items-center p-1'>
+                    Public Repos
+                  </div>
+                  <div>
+
+                  </div>
+                </div>
+                <div className='flex flex-grow bg-[#20252B] rounded-2xl m-2 my-3'>
+                  <div className='flex flex-col flex-grow items-center p-1'>
+                    Current Streak
+                  </div>
+                  <div>
+
+                  </div>
+                </div>
+              </div>
+              <div className='flex flex-grow'>
+                <div className='flex flex-grow bg-[#20252B] rounded-2xl m-2 mt-3'>
+                  <div className='flex flex-col flex-grow items-center p-1'>
+                    Languages
+                  </div>
+                  <div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+        </div>
+    )
+  };
 
   const RepoAnalytics = (percentage: number) => {
     return (
