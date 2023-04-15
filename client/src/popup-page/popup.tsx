@@ -7,26 +7,25 @@ interface IProps {
 }
 
 export const Popup: FC<IProps> = () => {
+  const [percentage,setPercentage] = useState(60)
     const handleCloseButtonClick = () => {
         window.close();
     };
-    const percentage = 60;
+    useEffect(() => {
+      console.log(location.pathname)
+    },[])
     return (
-        <div className="flex flex-col h-full">
-            <div className="flex flex-row justify-between items-center">
-                <h1 className="text-xl font-bold">Open Sourcerer</h1>
-                <button className="Button--primary Button">My Profile</button>
-            </div>
-            <hr className="my-2 border-gray-400" />
-            <div className="flex-grow flex">
-                <div className='flex flex-col justify-center'><ProgressBar percentage={percentage} /></div>
-                <div className='flex flex-col'></div>
-                
-            </div>
-            <div className="flex flex-row justify-end items-end">
-                <button className="btn Button" onClick={handleCloseButtonClick}>Close</button>
-            </div>
-        </div>
+      <div className="flex flex-col h-full">
+      <div className="flex flex-row justify-between items-center">
+          <h1 className="text-xl font-bold">Open Sourcerer</h1>
+          <button className="Button--primary Button">My Profile</button>
+      </div>
+      <hr className="my-2 border-gray-400" />
+      {RepoAnalytics(percentage)}   
+      <div className="flex flex-row justify-end items-end">
+          <button className="btn Button" onClick={handleCloseButtonClick}>Close</button>
+      </div>
+  </div>
     )
 }
 interface ProgressBarProps {
@@ -90,4 +89,76 @@ interface ProgressBarProps {
       </div>
     );
   };
-render(<Popup />, document.getElementById('popup'));
+
+
+
+  const RepoAnalytics = (percentage: number) => {
+    return (
+          <div className="flex-grow flex">
+            <div className='flex flex-col'>
+              <div className='p-4'>
+                <ProgressBar percentage={percentage} />
+              </div>
+              <div className='flex flex-grow bg-[#20252B] rounded-2xl m-2 mt-7'>
+                <div className='flex flex-col flex-grow items-center p-1'>
+                  Issue tags
+                </div>
+                <div>
+                  
+                </div>
+              </div>
+            </div>
+            <div className='flex flex-col flex-grow'>
+              <div className='flex flex-grow'>
+                <div className='flex flex-grow bg-[#20252B] rounded-2xl m-2 my-3'>
+                  <div className='flex flex-col flex-grow items-center p-1'>
+                    PR Merge Rate
+                  </div>
+                  <div>
+
+                  </div>
+                </div>
+                <div className='flex flex-grow bg-[#20252B] rounded-2xl m-2 my-3'>
+                  <div className='flex flex-col flex-grow items-center p-1'>
+                    Organization Size
+                  </div>
+                  <div>
+
+                  </div>
+                </div>
+              </div>
+              <div className='flex flex-grow'>
+                <div className='flex flex-grow bg-[#20252B] rounded-2xl m-2 my-3' style={{ flexBasis: '60%' }}>
+                  <div className='flex flex-col flex-grow items-center p-1'>
+                    Issues
+                  </div>
+                  <div>
+
+                  </div>
+                </div>
+                <div className='flex flex-grow bg-[#20252B] rounded-2xl m-2 my-3' style={{ flexBasis: '40%' }}>
+                  <div className='flex flex-col flex-grow items-center p-2'>
+                    Documentation Length
+                  </div>
+                  <div>
+
+                  </div>
+                </div>
+              </div>
+              <div className='flex flex-grow'>
+                <div className='flex flex-grow bg-[#20252B] rounded-2xl m-2 mt-3'>
+                  <div className='flex flex-col flex-grow items-center p-1'>
+                    Languages
+                  </div>
+                  <div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+        </div>
+    )
+  }
+  render(<Popup />, document.getElementById('popup'));
+
