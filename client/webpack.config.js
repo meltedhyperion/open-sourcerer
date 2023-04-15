@@ -2,6 +2,7 @@ const {resolve} = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const tsRule = {
     test:/\.ts(x?)$/,
@@ -9,19 +10,32 @@ const tsRule = {
     use: 'ts-loader'
 }
 
+const cssRule = {
+    test: /\.css$/i,
+    use: [
+        MiniCssExtractPlugin.loader,
+        'css-loader',
+        'postcss-loader',
+    ],
+};
+
 const plugins = [
     new HTMLWebpackPlugin({
-      template: 'src/popup-page/popup.html',
-      filename: 'popup.html',
-      chunks: ['popup'],
+        template: 'src/popup-page/popup.html',
+        filename: 'popup.html',
+        chunks: ['popup'],
     }),
     new CopyWebpackPlugin({
-      patterns: [
-        {from: "public", to: "."}
-      ],
+        patterns: [
+            {from: "public", to: "."}
+        ],
     }),
     new CleanWebpackPlugin(),
-  ];
+    new MiniCssExtractPlugin({
+        filename: '[name].css',
+        chunkFilename: '[id].css',
+    }),
+];
 
 module.exports = {
     mode: "development",
@@ -34,7 +48,10 @@ module.exports = {
         path: resolve(__dirname, 'dist')
     },
     module: {
-        rules: [tsRule],
+        rules: [
+            tsRule,
+            cssRule,
+        ],
     },
     plugins
 }
