@@ -6,7 +6,6 @@ export const getRepoCommits = async (
   page: number
 ) => {
   try {
-    console.log(owner, repo, page);
     const data = await octokit.request("GET /repos/{owner}/{repo}/commits", {
       owner: owner,
       repo: repo,
@@ -53,38 +52,50 @@ export const getRepoIssues = async (
   owner: string,
   repo: string,
   page: number,
-  state: string,
+  state: string
 ) => {
   try {
-    console.log("HELLO")
-    if (state === "undefined") 
-    {
-      state = "open"
-    };
-    console.log(owner, repo, page, state);
+    if (state === "undefined") {
+      state = "open";
+    }
     let STATE: "open" | "closed" | "all";
-    if (!(state === "open" || state === "closed" || state === "all")) 
+    if (!(state === "open" || state === "closed" || state === "all"))
       throw new Error("Invalid state");
-      STATE = state;
-    
-    const data = await octokit.request(
-      "GET /repos/{owner}/{repo}/issues",
-      {
-        owner: owner,
-        repo: repo,
-        headers: {
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-        per_page: 100,
-        page: page,
-        state: state,
-      }
-    );
-    console.log(data.headers);
+    STATE = state;
+
+    const data = await octokit.request("GET /repos/{owner}/{repo}/issues", {
+      owner: owner,
+      repo: repo,
+      headers: {
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+      per_page: 100,
+      page: page,
+      state: state,
+    });
     return {
       total: data.data.length,
       data: data.data,
     };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getRepoLanguages = async (owner: string, repo: string) => {
+  try {
+    const res = await octokit.request('GET /repos/{owner}/{repo}/languages', {
+      owner: owner,
+      repo: repo,
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    })
+    const data =  res.data;
+    // let sum = 0;
+    // Object.values(data).forEach((value) => {sum+=value});
+    // Object.keys(data).forEach((key) => {data[key] = (data[key]/sum)*100});
+    return data;
   } catch (error) {
     throw error;
   }
