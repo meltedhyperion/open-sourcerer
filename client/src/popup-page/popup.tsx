@@ -8,6 +8,8 @@ interface IProps {
 }
 
 export const Popup: FC<IProps> = () => {
+  const [profilePictureLink, setProfilePictureLink] = useState("")
+  const [username, setUsername] = useState("meltedhyperion")
   const [percentage,setPercentage] = useState(20)
   const [totalContributions,setTotalContributions] = useState(0)
   const [contributionRate, setContributionRate] = useState(0)
@@ -22,7 +24,8 @@ export const Popup: FC<IProps> = () => {
   const [openIssues, setOpenIssues]=useState(0) 
   const [closedIssues,setClosedIssues]=useState(0) 
   const [documentationLength, setDocumentationLength]=useState(0)
-  const [repoLink, useRepoLink] = useState("meltedhyperion/open-sourcerer")
+  const [repoLink, setRepoLink] = useState("meltedhyperion/open-sourcerer")
+  const [isGithubTokenPresent, setIsGithubTokenPresent] = useState(false)
     const handleCloseButtonClick = () => {
         window.close();
     };
@@ -32,15 +35,21 @@ export const Popup: FC<IProps> = () => {
     return (
       <div className="flex flex-col h-full">
       
-      {isAGithubRepoPage && (
-        <div className="flex flex-row justify-between items-center">
-          <h1 className="text-xl font-bold">Open Sourcerer</h1>
-          <button className="Button--primary Button " onClick={() => setShowRepoAnalytics(!showRepoAnalytics)}>{showRepoAnalytics?" My Profile Analytics":"Repo Analytics"}</button>
-        </div>
-      )}
+            
+        
+            <div className="flex flex-row justify-between items-center">
+            <h1 className="text-xl">{username}</h1>
+            <h1 className='text-xl font-bold justify-between'>{showRepoAnalytics ? "Repo Analytics" : "My Profile Analytics"}</h1>
+            {isAGithubRepoPage && (
+              <button className="Button--primary Button " onClick={() => setShowRepoAnalytics(!showRepoAnalytics)}>{showRepoAnalytics ? "My Profile Analytics" : "Repo Analytics"}</button>
+  
+            )}
+            
+          </div>
+          
     
       <hr className="my-2 border-gray-400" />
-      {
+      {/* {
         showRepoAnalytics?<RepoAnalytics
                             percentage={percentage}
                             issueTags={issueTags}
@@ -55,10 +64,13 @@ export const Popup: FC<IProps> = () => {
                           contributionRate={contributionRate}
                           publicRepos={publicRepos}
                           currentStreak={currentStreak}
-                          techStack={techStack}/>  
+                          techStack={techStack}
+                          profilePictureLink={profilePictureLink}/>  
         
-      }
+      } */}
 
+      <img src='logo.png' className='scale-[0.25]'></img>
+      <GitHubTokenPage isGithubTokenPresent = {isGithubTokenPresent}/>
       <div className="flex flex-row justify-end items-end">
           <button className="btn Button" onClick={handleCloseButtonClick}>Close</button>
       </div>
@@ -126,15 +138,21 @@ interface ProgressBarProps {
       </div>
     );
   };
-  const UserAnalytics = ({totalContributions, contributionRate, publicRepos, currentStreak, techStack}:
+  const UserAnalytics = ({totalContributions, contributionRate, publicRepos, currentStreak, techStack, profilePictureLink}:
     {totalContributions:number,
     contributionRate: number,
     publicRepos: number,
     currentStreak:number,
-    techStack:string[]}
+    techStack:string[],
+    profilePictureLink:string}
   ) => {
     return (
       <div className="flex-grow flex">
+        <div className='flex flex-col flex-grow w-[30%]'>
+        <div className='grow flex flex-row bg-[#20252B] rounded-2xl m-2 my-3'>
+          <img src={profilePictureLink} className='scale-50 rounded-full'></img>
+        </div>
+        </div>
             <div className='flex flex-col flex-grow'>
               <div className='flex flex-grow h-[33%]'>
                 <div className='grow flex flex-col bg-[#20252B] rounded-2xl m-2 my-3'>
@@ -187,6 +205,41 @@ interface ProgressBarProps {
             </div>
             
         </div>
+    )
+  };
+
+  
+
+  const GitHubTokenPage = ({isGithubTokenPresent}:{isGithubTokenPresent:boolean}
+  ) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [input, setInput] = useState("");
+    const [isGithubTokenPresentAttr, setIsGithubTokenPresent] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+  
+    const submitHandler = () => {
+      setIsLoading(true);
+      setInput(inputRef.current?.value || "");
+      setIsGithubTokenPresent(true);
+      setIsLoading(false);
+    }
+  
+    return (
+      <>
+        {isLoading
+        ? <div>Loading...</div>
+        :(
+          !isGithubTokenPresent ? (
+            <div className='gap-5 flex flex-grow justify-center items-center'>
+              <input ref={inputRef} type="text" placeholder='Your Github Token' className="resize-none px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent text-black w-[50%]"/>
+              <button className='Button--primary Button' onClick={submitHandler}>Submit Token</button>
+            </div>
+          ): (
+            <>
+            </>
+          )
+        )}
+      </>
     )
   };
 
