@@ -5,6 +5,7 @@ import {
   getRepoCommits,
   getRepoIssues,
   getRepoLanguages,
+  getUserLang,
 } from "./repo-service";
 
 const handleGetRepoCommits = async (
@@ -50,11 +51,12 @@ const handleGetRepoLanguages = async (
   next: NextFunction
 ) => {
   try {
-    const data = await getRepoLanguages(
+    const repoLang = await getRepoLanguages(
       String(req.query.owner),
       String(req.query.repo)
     );
-    res.status(200).send(data);
+    const userLang = await getUserLang(String(req.query.username));
+    res.status(200).send({userLang, repoLang});
   } catch (err) {
     console.log(err);
     res.status(500).send(err.message);

@@ -82,6 +82,36 @@ export const getRepoIssues = async (
   }
 };
 
+
+export const getUserLang = async (username: string) => {
+  try {
+    const result = {}
+    const res = await octokit.request('GET /users/{username}/repos', {
+      username: username,
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    });
+    const tmp = [];
+    for (let i = 0; i < res.data.length; i++) {
+      tmp.push(await getRepoLanguages(username, res.data[i].name));
+    }
+    for (let i = 0; i < tmp.length; i++) {
+      for (const [key, value] of Object.entries(tmp[i])) {
+        if (result[key]) {
+          result[key] += value;
+        } else {
+          result[key] = value;
+        }
+      }
+    }
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+  }
+
 export const getRepoLanguages = async (owner: string, repo: string) => {
   try {
     const res = await octokit.request('GET /repos/{owner}/{repo}/languages', {
@@ -99,4 +129,6 @@ export const getRepoLanguages = async (owner: string, repo: string) => {
   } catch (error) {
     throw error;
   }
+
 };
+
