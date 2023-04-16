@@ -35,7 +35,7 @@ export const Popup: FC<IProps> = () => {
       {isAGithubRepoPage && (
         <div className="flex flex-row justify-between items-center">
           <h1 className="text-xl font-bold">Open Sourcerer</h1>
-          <button className="Button--primary Button " onClick={() => setShowRepoAnalytics(!showRepoAnalytics)}>{showRepoAnalytics?"Repo Analytics":"My Profile"}</button>
+          <button className="Button--primary Button " onClick={() => setShowRepoAnalytics(!showRepoAnalytics)}>{showRepoAnalytics?" My Profile Analytics":"Repo Analytics"}</button>
         </div>
       )}
     
