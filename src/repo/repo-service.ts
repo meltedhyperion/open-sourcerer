@@ -140,3 +140,17 @@ export const getRepoLanguages = async (owner: string, repo: string, octokit) => 
 
 };
 
+export const getRepoReadme = async (owner: string, repo: string, octokit) => {
+  try {
+    const data = await octokit.request('GET /repos/{owner}/{repo}/readme', {
+      owner: owner,
+      repo: repo,
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    })
+    return data.data;
+  } catch (error) {
+    throw error;
+  }
+}
