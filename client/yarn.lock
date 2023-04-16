@@ -1659,6 +1659,11 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
+react-github-languages@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-github-languages/-/react-github-languages-1.0.0.tgz#08666ce506c0fbe597a2b9d06b391ed1f7411ad4"
+  integrity sha512-XpRtvQaCCExnsI8VwcOyB8+BIdQUQer2gTWL09DA0hQOiOhqeIII/OXT6A0v3vEndu6CKy3S1We1WTAWJXqCuA==
+
 react-router-dom@^6.10.0:
   version "6.10.0"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.10.0.tgz#090ddc5c84dc41b583ce08468c4007c84245f61f"
