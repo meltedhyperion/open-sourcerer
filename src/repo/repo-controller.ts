@@ -1,6 +1,6 @@
 // all routes with /repo prefix
 import { Router, Request, Response, NextFunction } from "express";
-import { octokit } from "..";
+
 import {
   getRepoCommits,
   getRepoIssues,
@@ -17,7 +17,8 @@ const handleGetRepoCommits = async (
     const data = await getRepoCommits(
       String(req.query.owner),
       String(req.query.repo),
-      +req.query.page || 1
+      +req.query.page || 1,
+      res.locals.octokit
     );
     res.status(200).send(data);
   } catch (err) {
@@ -36,7 +37,8 @@ const handleGetRepoIssues = async (
       String(req.query.owner),
       String(req.query.repo),
       +req.query.page || 1,
-      String(req.query.state)
+      String(req.query.state),
+      res.locals.octokit
     );
     res.status(200).send(data);
   } catch (err) {
@@ -53,10 +55,11 @@ const handleGetRepoLanguages = async (
   try {
     const repoLang = await getRepoLanguages(
       String(req.query.owner),
-      String(req.query.repo)
+      String(req.query.repo),
+      res.locals.octokit
     );
-    const userLang = await getUserLang(String(req.query.username));
-    res.status(200).send({userLang, repoLang});
+    const userLang = await getUserLang(String(req.query.username), res.locals.octokit);
+    res.status(200).send({ userLang, repoLang });
   } catch (err) {
     console.log(err);
     res.status(500).send(err.message);

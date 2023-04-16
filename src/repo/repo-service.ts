@@ -1,9 +1,15 @@
-import { octokit } from "..";
+import { Octokit } from "octokit";
+import configs from "../configs";
+
+// export const octokit = new Octokit({
+//   auth: configs.GITHUB_TOKEN,
+// });
 
 export const getRepoCommits = async (
   owner: string,
   repo: string,
-  page: number
+  page: number,
+  octokit
 ) => {
   try {
     const data = await octokit.request("GET /repos/{owner}/{repo}/commits", {
@@ -16,10 +22,10 @@ export const getRepoCommits = async (
       page: page,
     });
     return {
-      totalNoOfCommits: await getTotalCommits(owner, repo),
+      totalNoOfCommits: await getTotalCommits(owner, repo, octokit),
       pageNum: page,
       commitsOnThisPage: data.data.length,
-      lastPage: Math.ceil((await getTotalCommits(owner, repo)) / 100),
+      lastPage: Math.ceil((await getTotalCommits(owner, repo, octokit)) / 100),
       data: data.data,
     };
   } catch (error) {
@@ -27,7 +33,7 @@ export const getRepoCommits = async (
   }
 };
 
-export const getTotalCommits = async (owner: string, repo: string) => {
+export const getTotalCommits = async (owner: string, repo: string, octokit) => {
   try {
     const data = await octokit.request("GET /repos/{owner}/{repo}/commits", {
       owner: owner,
@@ -52,7 +58,8 @@ export const getRepoIssues = async (
   owner: string,
   repo: string,
   page: number,
-  state: string
+  state: string,
+  octokit
 ) => {
   try {
     if (state === "undefined") {
@@ -83,8 +90,9 @@ export const getRepoIssues = async (
 };
 
 
-export const getUserLang = async (username: string) => {
+export const getUserLang = async (username: string, octokit) => {
   try {
+
     const result = {}
     const res = await octokit.request('GET /users/{username}/repos', {
       username: username,
@@ -94,7 +102,7 @@ export const getUserLang = async (username: string) => {
     });
     const tmp = [];
     for (let i = 0; i < res.data.length; i++) {
-      tmp.push(await getRepoLanguages(username, res.data[i].name));
+      tmp.push(await getRepoLanguages(username, res.data[i].name, octokit));
     }
     for (let i = 0; i < tmp.length; i++) {
       for (const [key, value] of Object.entries(tmp[i])) {
@@ -112,7 +120,7 @@ export const getUserLang = async (username: string) => {
   }
   }
 
-export const getRepoLanguages = async (owner: string, repo: string) => {
+export const getRepoLanguages = async (owner: string, repo: string, octokit) => {
   try {
     const res = await octokit.request('GET /repos/{owner}/{repo}/languages', {
       owner: owner,
