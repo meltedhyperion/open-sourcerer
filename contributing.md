@@ -2,7 +2,7 @@
 Thank you for your interest in contributing to Open Sourcerer! We appreciate any help we can get to improve our project. Before getting started, please read through the guidelines below.
 
 ## Code of Conduct
-Please note that this project has a Code of Conduct. By participating in this project, you agree to abide by its terms.
+Please note that this project has a [Code of Conduct](https://github.com/meltedhyperion/open-sourcerer/blob/main/CODE_OF_CONDUCT.md). By participating in this project, you agree to abide by its terms.
 
 ### How to Contribute
 - Fork the project repository
